@@ -1,21 +1,22 @@
 export interface Message {
-  id: string;
-  chat_id: string;
-  sender: 'cliente' | 'agent';
+  id: string; // Baseado na tabela messages_chats
+  chat_id: number;
+  sender: "cliente" | "agent";
   message: string;
-  agent_id: string;
+  agent_id: number;
   created_at: string;
-};
-
+}
 
 export interface Conversation {
-  session_id: string;
-  name_contact: string;
-  messages: Message[];
-  hasNewMessages?: boolean;
-  message_timestamp: string;
+  id: string; // Baseado na tabela chats
+  customer_phone: string;
+  customer_name: string | null;
+  agent_id: number;
+  picture: string | null;
   tags: string[];
-  picture: string;
+  status: "active" | "inactive"; // Assumindo possíveis valores de status
+  created_at: string;
+  updated_at: string;
 }
 
 export interface ConversationsResponse {
@@ -35,7 +36,7 @@ export interface LeadInfo {
   value?: number;
   pipeline?: string;
   stage?: string;
-  tags: string[]
+  tags: string[];
 }
 
 export interface LeadInfoResponse {
@@ -44,6 +45,19 @@ export interface LeadInfoResponse {
 }
 
 export interface Collaborator {
-  name_contact: string;
-  saler_id: string;
+  id: string; // Baseado na tabela agents
+  phone: string;
+  name: string;
+  agent_type: "chatbot" | "human";
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PredefinedMessage {
+  id: string; // Baseado na tabela predefined_messages
+  agent_id: number;
+  name: string;
+  message: string;
+  created_at: string;
+  updated_at: string;
 }

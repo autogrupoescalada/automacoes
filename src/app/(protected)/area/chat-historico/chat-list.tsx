@@ -7,9 +7,25 @@ import { User2, Search, MoreVertical, Tag, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import Image from "next/image";
 
 function formatTimestamp(timestamp?: string): string {
@@ -30,10 +46,10 @@ function formatTimestamp(timestamp?: string): string {
 
 // Map tag names to their corresponding colors
 const TAG_COLORS = {
-  "Quente": "bg-red-500",
-  "Morno": "bg-yellow-500",
-  "Frio": "bg-blue-500",
-  "Call Agendada": "bg-green-500"
+  Quente: "bg-red-500",
+  Morno: "bg-yellow-500",
+  Frio: "bg-blue-500",
+  "Call Agendada": "bg-green-500",
 };
 
 // Available tags
@@ -56,7 +72,13 @@ type PredefinedMessage = {
   updated_at: string;
 };
 
-export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedChat, predefinedMessages }: ChatListProps) {
+export function ChatList({
+  conversations,
+  onSelectChat,
+  onDeleteChat,
+  selectedChat,
+  predefinedMessages,
+}: ChatListProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [leadInfo, setLeadInfo] = useState<LeadInfo | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -75,8 +97,10 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
   const [isUpdatingChat, setIsUpdatingChat] = useState(false);
 
   // New states for predefined messages
-  const [predefinedMessagesModalOpen, setPredefinedMessagesModalOpen] = useState(false);
-  const [editingMessage, setEditingMessage] = useState<PredefinedMessage | null>(null);
+  const [predefinedMessagesModalOpen, setPredefinedMessagesModalOpen] =
+    useState(false);
+  const [editingMessage, setEditingMessage] =
+    useState<PredefinedMessage | null>(null);
   const [editedMessageContent, setEditedMessageContent] = useState("");
   const [isUpdatingMessage, setIsUpdatingMessage] = useState(false);
 
@@ -86,7 +110,9 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
       const response = await fetch("/api/agents");
 
       if (!response.ok) {
-        throw new Error(`Erro HTTP ${response.status} - ${response.statusText}`);
+        throw new Error(
+          `Erro HTTP ${response.status} - ${response.statusText}`,
+        );
       }
 
       const data = await response.json();
@@ -103,7 +129,9 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
       await fetchCollaborators();
     };
 
-    loadCollaborators().catch(error => console.error("Erro ao buscar colaboradores:", error));
+    loadCollaborators().catch((error) =>
+      console.error("Erro ao buscar colaboradores:", error),
+    );
   }, []);
 
   const fetchLeadInfo = async (session_id: string) => {
@@ -114,9 +142,9 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
         `https://autowebhook.escaladaecom.com.br/webhook/get-deal?session_id=${session_id}`,
         {
           headers: {
-            Authorization: "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a"
-          }
-        }
+            Authorization: "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
+          },
+        },
       );
 
       if (!response.ok) {
@@ -154,7 +182,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
             session_id: currentSessionId,
             owner_id: selectedCollaborator,
           }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -189,7 +217,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
             session_id: currentSessionId,
             tags: selectedTags,
           }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -216,17 +244,20 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
 
     setIsUpdatingChat(true);
     try {
-      const response = await fetch("https://autowebhook.escaladaecom.com.br/webhook/update-chat", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
+      const response = await fetch(
+        "https://autowebhook.escaladaecom.com.br/webhook/update-chat",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
+          },
+          body: JSON.stringify({
+            chat_id: currentChatId,
+            name_contact: chatConfigName,
+          }),
         },
-        body: JSON.stringify({
-          chat_id: currentChatId,
-          name_contact: chatConfigName,
-        }),
-      });
+      );
 
       if (!response.ok) {
         throw new Error("Erro ao atualizar chat");
@@ -260,7 +291,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
             message: editedMessageContent,
             name: editingMessage.name, // Keep the original name
           }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -279,18 +310,14 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
   };
 
   const toggleTag = (tag: string) => {
-    setSelectedTags(prev =>
-      prev.includes(tag)
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
   };
 
   const toggleTagFilter = (tag: string) => {
-    setTagFilters(prev =>
-      prev.includes(tag)
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
+    setTagFilters((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
     );
   };
 
@@ -304,9 +331,10 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
     if (!tags || tags.length === 0) return null;
 
     return (
-      <div className="flex gap-1 mt-1">
+      <div className="mt-1 flex gap-1">
         {tags.map((tag, index) => {
-          const tagColor = TAG_COLORS[tag as keyof typeof TAG_COLORS] || "bg-gray-500";
+          const tagColor =
+            TAG_COLORS[tag as keyof typeof TAG_COLORS] || "bg-gray-500";
           return (
             <div
               key={`${tag}-${index}`}
@@ -323,9 +351,15 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
     if (!contact) return false;
 
     const searchLower = searchTerm.toLowerCase();
-    const nameMatch = contact.name ? contact.name.toLowerCase().includes(searchLower) : false;
-    const nameContactMatch = contact.name_contact ? contact.name_contact.toLowerCase().includes(searchLower) : false;
-    const sessionMatch = contact.customer_phone ? contact.customer_phone.toLowerCase().includes(searchLower) : false;
+    const nameMatch = contact.customer_name
+      ? contact.customer_name.toLowerCase().includes(searchLower)
+      : false;
+    const nameContactMatch = contact.customer_name
+      ? contact.customer_name.toLowerCase().includes(searchLower)
+      : false;
+    const sessionMatch = contact.customer_phone
+      ? contact.customer_phone.toLowerCase().includes(searchLower)
+      : false;
     const matchesSearch = nameMatch || nameContactMatch || sessionMatch;
 
     // If no tag filters are applied, only apply search filter
@@ -334,8 +368,8 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
     }
 
     // Apply both search and tag filters
-    const hasAllTags = tagFilters.every(tag =>
-      contact.tags ? contact.tags.includes(tag) : false
+    const hasAllTags = tagFilters.every((tag) =>
+      contact.tags ? contact.tags.includes(tag) : false,
     );
 
     return matchesSearch && hasAllTags;
@@ -343,7 +377,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
 
   return (
     <Card className="h-full">
-      <div className="p-4 border-b flex justify-between items-center">
+      <div className="flex items-center justify-between border-b p-4">
         <h2 className="text-xl font-semibold">Conversas</h2>
 
         {/* New Settings Button */}
@@ -354,7 +388,9 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setPredefinedMessagesModalOpen(true)}>
+            <DropdownMenuItem
+              onClick={() => setPredefinedMessagesModalOpen(true)}
+            >
               Mensagens Predefinidas
             </DropdownMenuItem>
             {/* You can add more settings options here */}
@@ -362,9 +398,9 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
         </DropdownMenu>
       </div>
 
-      <div className="p-4 border-b">
+      <div className="border-b p-4">
         <div className="relative mb-3">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
           <Input
             placeholder="Buscar por nome ou contato..."
             value={searchTerm}
@@ -378,31 +414,33 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
           <Button
             variant="outline"
             size="sm"
-            className="flex items-center gap-2 w-full"
+            className="flex w-full items-center gap-2"
             onClick={() => setTagFilterOpen(!tagFilterOpen)}
           >
             <Tag className="h-4 w-4" />
             <span>Filtrar por tags</span>
             {tagFilters.length > 0 && (
-              <div className="ml-auto bg-primary text-white text-xs px-2 py-0.5 rounded-full">
+              <div className="ml-auto rounded-full bg-primary px-2 py-0.5 text-xs text-white">
                 {tagFilters.length}
               </div>
             )}
           </Button>
 
           {tagFilterOpen && (
-            <div className="mt-2 p-2 border rounded-md">
-              <div className="text-sm font-medium mb-2">Filtrar por tags:</div>
+            <div className="mt-2 rounded-md border p-2">
+              <div className="mb-2 text-sm font-medium">Filtrar por tags:</div>
               <div className="flex flex-wrap gap-2">
                 {AVAILABLE_TAGS.map((tag) => {
                   const isSelected = tagFilters.includes(tag);
-                  const tagColor = TAG_COLORS[tag as keyof typeof TAG_COLORS] || "bg-gray-500";
+                  const tagColor =
+                    TAG_COLORS[tag as keyof typeof TAG_COLORS] || "bg-gray-500";
                   const tagOpacity = isSelected ? "opacity-100" : "opacity-50";
-                  const textColor = tag === "Morno" ? "text-black" : "text-white";
+                  const textColor =
+                    tag === "Morno" ? "text-black" : "text-white";
                   return (
                     <button
                       key={tag}
-                      className={`${tagColor} ${tagOpacity} ${textColor} text-xs px-2 py-1 rounded-full cursor-pointer`}
+                      className={`${tagColor} ${tagOpacity} ${textColor} cursor-pointer rounded-full px-2 py-1 text-xs`}
                       onClick={() => toggleTagFilter(tag)}
                     >
                       {tag}
@@ -426,15 +464,18 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
 
         {/* Active filters display */}
         {tagFilters.length > 0 && (
-          <div className="flex flex-wrap gap-1 mb-3">
-            <span className="text-xs text-muted-foreground">Filtros ativos:</span>
+          <div className="mb-3 flex flex-wrap gap-1">
+            <span className="text-xs text-muted-foreground">
+              Filtros ativos:
+            </span>
             {tagFilters.map((tag) => {
-              const tagColor = TAG_COLORS[tag as keyof typeof TAG_COLORS] || "bg-gray-500";
+              const tagColor =
+                TAG_COLORS[tag as keyof typeof TAG_COLORS] || "bg-gray-500";
               const textColor = tag === "Morno" ? "text-black" : "text-white";
               return (
                 <span
                   key={tag}
-                  className={`${tagColor} ${textColor} text-xs px-1.5 py-0.5 rounded-full`}
+                  className={`${tagColor} ${textColor} rounded-full px-1.5 py-0.5 text-xs`}
                 >
                   {tag}
                 </span>
@@ -449,18 +490,20 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
             filteredConversations.map((contact) => (
               <div
                 key={contact.id}
-                className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${selectedChat === contact.id ? "bg-primary/10" : "hover:bg-muted"
+                className={`flex cursor-pointer items-center gap-3 rounded-lg p-3 transition-colors ${selectedChat === contact.id
+                    ? "bg-primary/10"
+                    : "hover:bg-muted"
                   }`}
               >
                 <div
                   className="flex flex-1 items-center gap-3"
                   onClick={() => onSelectChat(contact.id)}
                 >
-                  <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted overflow-hidden">
+                  <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted">
                     {contact.picture ? (
                       <Image
                         src={contact.picture}
-                        alt={contact.name_contact || "Perfil"}
+                        alt={contact.customer_name || "Perfil"}
                         width={40}
                         height={40}
                         className="object-cover"
@@ -470,18 +513,20 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
                     )}
                   </div>
                   <div className="flex-1 overflow-hidden">
-                    <div className="font-medium leading-none mb-1">
-                      {contact.customer_name || contact.name_contact || "Desconhecido"}
+                    <div className="mb-1 font-medium leading-none">
+                      {contact.customer_name ||
+                        contact.customer_name ||
+                        "Desconhecido"}
                     </div>
                     {renderTagIndicators(contact.tags)}
-                    <div className="text-sm text-muted-foreground truncate">
-                      {contact.customer_phone || contact.session_id}
+                    <div className="truncate text-sm text-muted-foreground">
+                      {contact.customer_phone || contact.customer_phone}
                     </div>
                   </div>
                 </div>
                 <div className="flex flex-col items-end">
                   <div className="text-xs text-muted-foreground">
-                    {formatTimestamp(contact.message_timestamp)}
+                    {formatTimestamp(contact.updated_at)}
                   </div>
                 </div>
                 <DropdownMenu>
@@ -491,11 +536,18 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => openChatConfigModal(contact.id, contact.name_contact || "Desconhecido")}>
+                    <DropdownMenuItem
+                      onClick={() =>
+                        openChatConfigModal(
+                          contact.id,
+                          contact.customer_name || "Desconhecido",
+                        )
+                      }
+                    >
                       Configuração
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => fetchLeadInfo(contact.session_id)}
+                      onClick={() => fetchLeadInfo(contact.customer_phone)}
                       disabled={isLoading}
                     >
                       {isLoading ? "Carregando..." : "Informações do Lead"}
@@ -527,12 +579,12 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
           {leadInfo && (
             <div className="space-y-4">
               <div className="grid gap-2">
-                <div className="flex flex-col gap-2 py-2 border-b">
+                <div className="flex flex-col gap-2 border-b py-2">
                   <span className="font-medium">Responsável Atual</span>
                   <span className="text-sm text-muted-foreground">
                     {leadInfo.owner_name || "Não definido"}
                   </span>
-                  <span className="font-medium mt-4">Alterar Responsável</span>
+                  <span className="mt-4 font-medium">Alterar Responsável</span>
                   <Select
                     value={selectedCollaborator || ""}
                     onValueChange={(value) => {
@@ -542,13 +594,18 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Selecione um responsável">
-                        {collaborators.find((c) => c.saler_id === selectedCollaborator)?.name_contact ?? "Selecione um responsável"}
+                        {collaborators.find(
+                          (c) => c.id === selectedCollaborator,
+                        )?.name ?? "Selecione um responsável"}
                       </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       {collaborators.map((collaborator, index) => (
-                        <SelectItem key={collaborator.saler_id || `collaborator-${index}`} value={collaborator.saler_id}>
-                          {collaborator.name_contact}
+                        <SelectItem
+                          key={collaborator.id || `collaborator-${index}`}
+                          value={collaborator.id}
+                        >
+                          {collaborator.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -556,45 +613,58 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
 
                   <Button
                     onClick={updateOwner}
-                    disabled={isUpdatingOwner || selectedCollaborator === leadInfo.owner_id}
+                    disabled={
+                      isUpdatingOwner ||
+                      selectedCollaborator === leadInfo.owner_id
+                    }
                   >
                     {isUpdatingOwner ? "Atualizando..." : "Alterar Responsável"}
                   </Button>
                 </div>
 
                 {/* Tags section */}
-                <div className="flex flex-col gap-2 py-2 border-b">
+                <div className="flex flex-col gap-2 border-b py-2">
                   <span className="font-medium">Tags</span>
-                  <div className="flex flex-wrap gap-2 mb-3">
+                  <div className="mb-3 flex flex-wrap gap-2">
                     {selectedTags.length > 0 ? (
                       selectedTags.map((tag, index) => {
-                        const tagColor = TAG_COLORS[tag as keyof typeof TAG_COLORS] || "bg-gray-500";
-                        const textColor = tag === "Morno" ? "text-black" : "text-white";
+                        const tagColor =
+                          TAG_COLORS[tag as keyof typeof TAG_COLORS] ||
+                          "bg-gray-500";
+                        const textColor =
+                          tag === "Morno" ? "text-black" : "text-white";
                         return (
                           <span
                             key={`${tag}-${index}`}
-                            className={`${tagColor} ${textColor} text-xs px-2 py-1 rounded-full`}
+                            className={`${tagColor} ${textColor} rounded-full px-2 py-1 text-xs`}
                           >
                             {tag}
                           </span>
                         );
                       })
                     ) : (
-                      <span className="text-sm text-muted-foreground">Nenhuma tag selecionada</span>
+                      <span className="text-sm text-muted-foreground">
+                        Nenhuma tag selecionada
+                      </span>
                     )}
                   </div>
 
                   <span className="font-medium">Gerenciar Tags</span>
-                  <div className="flex flex-wrap gap-2 mb-3">
+                  <div className="mb-3 flex flex-wrap gap-2">
                     {AVAILABLE_TAGS.map((tag) => {
                       const isSelected = selectedTags.includes(tag);
-                      const tagColor = TAG_COLORS[tag as keyof typeof TAG_COLORS] || "bg-gray-500";
-                      const tagOpacity = isSelected ? "opacity-100" : "opacity-50";
-                      const textColor = tag === "Morno" ? "text-black" : "text-white";
+                      const tagColor =
+                        TAG_COLORS[tag as keyof typeof TAG_COLORS] ||
+                        "bg-gray-500";
+                      const tagOpacity = isSelected
+                        ? "opacity-100"
+                        : "opacity-50";
+                      const textColor =
+                        tag === "Morno" ? "text-black" : "text-white";
                       return (
                         <button
                           key={tag}
-                          className={`${tagColor} ${tagOpacity} ${textColor} text-xs px-2 py-1 rounded-full cursor-pointer`}
+                          className={`${tagColor} ${tagOpacity} ${textColor} cursor-pointer rounded-full px-2 py-1 text-xs`}
                           onClick={() => toggleTag(tag)}
                         >
                           {tag}
@@ -603,15 +673,12 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
                     })}
                   </div>
 
-                  <Button
-                    onClick={updateTags}
-                    disabled={isUpdatingTags}
-                  >
+                  <Button onClick={updateTags} disabled={isUpdatingTags}>
                     {isUpdatingTags ? "Atualizando..." : "Atualizar Tags"}
                   </Button>
                 </div>
 
-                <div className="flex justify-between py-2 border-b">
+                <div className="flex justify-between border-b py-2">
                   <span className="font-medium">Status</span>
                   <span className="capitalize">{leadInfo.deal_status}</span>
                 </div>
@@ -628,9 +695,18 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
             <DialogTitle>Configuração do Chat</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
-            <label className="block text-sm font-medium text-gray-700">Nome do Chat</label>
-            <Input value={chatConfigName} onChange={(e) => setChatConfigName(e.target.value)} />
-            <Button onClick={updateChatConfig} disabled={isUpdatingChat} className="w-full">
+            <label className="block text-sm font-medium text-gray-700">
+              Nome do Chat
+            </label>
+            <Input
+              value={chatConfigName}
+              onChange={(e) => setChatConfigName(e.target.value)}
+            />
+            <Button
+              onClick={updateChatConfig}
+              disabled={isUpdatingChat}
+              className="w-full"
+            >
               {isUpdatingChat ? "Salvando..." : "Salvar Alterações"}
             </Button>
           </div>
@@ -638,36 +714,41 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
       </Dialog>
 
       {/* New Predefined Messages Modal */}
-      <Dialog open={predefinedMessagesModalOpen} onOpenChange={setPredefinedMessagesModalOpen}>
+      <Dialog
+        open={predefinedMessagesModalOpen}
+        onOpenChange={setPredefinedMessagesModalOpen}
+      >
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Mensagens Predefinidas</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             {predefinedMessages.length > 0 ? (
-              <div className="space-y-3 max-h-96 overflow-y-auto">
+              <div className="max-h-96 space-y-3 overflow-y-auto">
                 {predefinedMessages.map((msg) => (
-                  <div key={msg.id} className="border rounded-lg p-3">
-                    <div className="font-medium mb-1">{msg.name}</div>
+                  <div key={msg.id} className="rounded-lg border p-3">
+                    <div className="mb-1 font-medium">{msg.name}</div>
                     {editingMessage?.id === msg.id ? (
                       <div className="space-y-2">
-                        <textarea 
+                        <textarea
                           value={editedMessageContent}
-                          onChange={(e) => setEditedMessageContent(e.target.value)}
-                          className="w-full p-2 border rounded-md"
+                          onChange={(e) =>
+                            setEditedMessageContent(e.target.value)
+                          }
+                          className="w-full rounded-md border p-2"
                           rows={4}
                         />
                         <div className="flex space-x-2">
-                          <Button 
-                            size="sm" 
+                          <Button
+                            size="sm"
                             onClick={updatePredefinedMessage}
                             disabled={isUpdatingMessage}
                           >
                             {isUpdatingMessage ? "Salvando..." : "Salvar"}
                           </Button>
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
+                          <Button
+                            size="sm"
+                            variant="outline"
                             onClick={() => setEditingMessage(null)}
                           >
                             Cancelar
@@ -676,12 +757,11 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
                       </div>
                     ) : (
                       <div>
-                        <p className="text-sm text-gray-600 whitespace-pre-wrap">{msg.message}</p>
-                        <div className="flex justify-end mt-2 space-x-2">
-                          <Button
-                            size="sm"
-                            onClick={() => editMessage(msg)}
-                          >
+                        <p className="whitespace-pre-wrap text-sm text-gray-600">
+                          {msg.message}
+                        </p>
+                        <div className="mt-2 flex justify-end space-x-2">
+                          <Button size="sm" onClick={() => editMessage(msg)}>
                             Editar
                           </Button>
                         </div>
@@ -691,7 +771,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
                 ))}
               </div>
             ) : (
-              <div className="text-center py-6">
+              <div className="py-6 text-center">
                 <p>Nenhuma mensagem predefinida encontrada.</p>
               </div>
             )}

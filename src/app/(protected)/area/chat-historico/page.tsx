@@ -21,15 +21,17 @@ export default function ChatHistoricoPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedChat, setSelectedChat] = useState<string>();
-  const [predefinedMessages, setPredefinedMessages] = useState<PredefinedMessage[]>([]);
+  const [predefinedMessages, setPredefinedMessages] = useState<
+    PredefinedMessage[]
+  >([]);
   const searchParams = useSearchParams();
-  const salerId = searchParams.get('id');
+  const salerId = searchParams.get("id");
 
   const fetchConversations = async () => {
     try {
       const response = await fetch(`/api/chats?salerId=${salerId}`);
       if (!response.ok) {
-        throw new Error('Failed to fetch conversations');
+        throw new Error("Failed to fetch conversations");
       }
       const data = await response.json();
       setConversations(data.conversations || []);
@@ -46,11 +48,13 @@ export default function ChatHistoricoPage() {
   const handleDeleteChat = async (phone: string) => {
     try {
       const response = await fetch(`/api/chat/${phone}`, {
-        method: "DELETE"
+        method: "DELETE",
       });
 
       if (response.ok) {
-        setConversations(prev => prev.filter(conv => conv.session_id !== phone));
+        setConversations((prev) =>
+          prev.filter((conv) => conv.customer_phone !== phone),
+        );
         if (selectedChat === phone) {
           setSelectedChat(undefined);
           setMessages([]);
@@ -65,7 +69,7 @@ export default function ChatHistoricoPage() {
     try {
       const response = await fetch(`/api/chat/${chatId}`);
       if (!response.ok) {
-        throw new Error('Failed to fetch messages');
+        throw new Error("Failed to fetch messages");
       }
       const data = await response.json();
       setMessages(data.messages || []);
@@ -99,7 +103,9 @@ export default function ChatHistoricoPage() {
 
   return (
     <main className="flex h-screen">
-      <div className={`w-full md:w-1/3 ${selectedChat ? "hidden md:block" : "block"}`}>
+      <div
+        className={`w-full md:w-1/3 ${selectedChat ? "hidden md:block" : "block"}`}
+      >
         <ChatList
           conversations={conversations}
           onSelectChat={handleSelectChat}
@@ -109,8 +115,10 @@ export default function ChatHistoricoPage() {
         />
       </div>
 
-      <div className={`w-full md:flex-1 ${!selectedChat ? "hidden md:block" : "block"}`}>
-        <div className="h-full flex flex-col">
+      <div
+        className={`w-full md:flex-1 ${!selectedChat ? "hidden md:block" : "block"}`}
+      >
+        <div className="flex h-full flex-col">
           {selectedChat && (
             <div className="p-2 md:hidden">
               <Button
