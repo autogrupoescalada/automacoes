@@ -320,9 +320,12 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
   };
 
   const filteredConversations = conversations.filter((contact) => {
+    if (!contact) return false;
+    
     const searchLower = searchTerm.toLowerCase();
-    const matchesSearch = contact.name_contact?.toLowerCase().includes(searchLower) ||
-      contact.session_id.toLowerCase().includes(searchLower);
+    const nameMatch = contact.name_contact ? contact.name_contact.toLowerCase().includes(searchLower) : false;
+    const sessionMatch = contact.customer_phone ? contact.customer_phone.toLowerCase().includes(searchLower) : false;
+    const matchesSearch = nameMatch || sessionMatch;
 
     // If no tag filters are applied, only apply search filter
     if (tagFilters.length === 0) {
@@ -331,7 +334,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
 
     // Apply both search and tag filters
     const hasAllTags = tagFilters.every(tag =>
-      contact.tags?.includes(tag)
+      contact.tags ? contact.tags.includes(tag) : false
     );
 
     return matchesSearch && hasAllTags;
