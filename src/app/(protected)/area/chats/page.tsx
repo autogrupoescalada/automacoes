@@ -34,7 +34,7 @@ export default function CollaboratorsPage() {
         const data = await response.json();
         console.log("Dados recebidos:", data);
 
-        setCollaborators(data.conversations);
+        setCollaborators(data.agents);
       } catch (error) {
         console.error("Erro ao buscar chats:", error);
         setError("Falha ao carregar chats. Tente novamente mais tarde.");
