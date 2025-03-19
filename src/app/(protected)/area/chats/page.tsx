@@ -14,8 +14,6 @@ export default function CollaboratorsPage() {
   const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const urlParams = new URLSearchParams(window.location.search);
-  const salerId = urlParams.get('salerId') || '';
 
 
   useEffect(() => {
@@ -72,11 +70,11 @@ export default function CollaboratorsPage() {
             return (
               <li key={index} className="border-b last:border-none">
                 <Link
-                  href={`/area/chat-historico?id=${collaborator.saler_id}`}
+                  href={`/area/chat-historico?id=${collaborator.id}`}
                   className="block px-6 py-4 transition-all hover:bg-muted"
                 >
-                  <div className="font-semibold">{collaborator.name_contact}</div>
-                  <div className="text-sm text-gray-500">📱 {collaborator.saler_phone || "Não informado"}</div>
+                  <div className="font-semibold">{collaborator.name}</div>
+                  <div className="text-sm text-gray-500">📱 {collaborator.phone || "Não informado"}</div>
                 </Link>
               </li>
             );
