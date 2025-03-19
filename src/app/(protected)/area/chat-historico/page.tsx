@@ -8,7 +8,6 @@ import { type Conversation, type Message } from "@/types";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Define the type for predefined messages
 type PredefinedMessage = {
   id: number;
   agent_id: number;
@@ -18,92 +17,37 @@ type PredefinedMessage = {
   updated_at: string;
 };
 
-export default function Home() {
+export default function ChatHistoricoPage() {
   const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [selectedChat, setSelectedChat] = useState<string>();
   const [messages, setMessages] = useState<Message[]>([]);
+  const [selectedChat, setSelectedChat] = useState<string>();
   const [predefinedMessages, setPredefinedMessages] = useState<PredefinedMessage[]>([]);
   const searchParams = useSearchParams();
-  const salerId = searchParams.get("id");
+  const salerId = searchParams.get('id');
 
   const fetchConversations = async () => {
     try {
-      const response = await fetch(
-        `https://autowebhook.escaladaecom.com.br/webhook/conversations-sb?salerId=${salerId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
-          },
-        }
-      );
-      const data = await response.json();
-      if (data.conversations && Array.isArray(data.conversations)) {
-        setConversations(data.conversations);
+      const response = await fetch(`/api/chats?salerId=${salerId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch conversations');
       }
+      const data = await response.json();
+      setConversations(data.conversations || []);
     } catch (error) {
-      console.error("Erro ao buscar conversas:", error);
+      console.error("Error fetching conversations:", error);
     }
   };
 
-  const fetchMessages = async (phone: string) => {
-    try {
-      const response = await fetch(
-        `https://autowebhook.escaladaecom.com.br/webhook/conversation-id-sb?session_id=${phone}&salerId=${salerId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
-          },
-        }
-      );
-      const data = await response.json();
-      if (data.messages && Array.isArray(data.messages)) {
-        setMessages(data.messages);
-      }
-    } catch (error) {
-      console.error("Erro ao buscar mensagens:", error);
-    }
-  };
-
-  const fetchPredefinedMessages = async () => {
-    try {
-      const response = await fetch(
-        `https://autowebhook.escaladaecom.com.br/webhook/predefined_messages-get?agent_id=${salerId}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
-          },
-        }
-      );
-      const data = await response.json();
-      if (data.messages && Array.isArray(data.messages)) {
-        setPredefinedMessages(data.messages);
-      }
-    } catch (error) {
-      console.error("Erro ao buscar mensagens predefinidas:", error);
-    }
-  };
-
-  const handleSelectChat = async (phone: string) => {
-    setSelectedChat(phone);
-    setMessages([]);
-    await fetchMessages(phone);
+  const handleSelectChat = (sessionId: string) => {
+    setSelectedChat(sessionId);
+    void fetchMessages(sessionId);
   };
 
   const handleDeleteChat = async (phone: string) => {
     try {
-      const response = await fetch(
-        `https://autowebhook.escaladaecom.com.br/webhook/delete-conversation-id-sb?session_id=${phone}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
-          },
-        }
-      );
+      const response = await fetch(`/api/chat/${phone}`, {
+        method: "DELETE"
+      });
 
       if (response.ok) {
         setConversations(prev => prev.filter(conv => conv.session_id !== phone));
@@ -113,23 +57,30 @@ export default function Home() {
         }
       }
     } catch (error) {
-      console.error("Erro ao deletar conversa:", error);
+      console.error("Error deleting chat:", error);
+    }
+  };
+
+  const fetchMessages = async (chatId: string) => {
+    try {
+      const response = await fetch(`/api/chat/${chatId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch messages');
+      }
+      const data = await response.json();
+      setMessages(data.messages || []);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
     }
   };
 
   useEffect(() => {
     void fetchConversations();
-    // Fetch predefined messages when the component mounts
-    if (salerId) {
-      void fetchPredefinedMessages();
-    }
-    
     const conversationsInterval = setInterval(() => {
       void fetchConversations();
     }, 60000);
-    
+
     return () => clearInterval(conversationsInterval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [salerId]);
 
   useEffect(() => {

@@ -83,13 +83,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
   const fetchCollaborators = async () => {
     try {
       console.log("Buscando chats...");
-      const response = await fetch("https://autowebhook.escaladaecom.com.br/webhook/collaborators", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
-        },
-      });
+      const response = await fetch("/api/agents");
 
       if (!response.ok) {
         throw new Error(`Erro HTTP ${response.status} - ${response.statusText}`);
@@ -98,7 +92,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
       const data = await response.json();
       console.log("Dados recebidos:", data);
 
-      setCollaborators(data.collaborators || []);
+      setCollaborators(data.agents || []);
     } catch (error) {
       console.error("Erro ao buscar chats:", error);
     }
