@@ -1,0 +1,1772 @@
+{
+  "name": "[COMERCIAL] WhatsApp API Chat Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Api da chat do whatsapp\n**Fluxo para enviar conversas** do bot com o cliente no whatsapp [view](https://silly-cocada-84d443.netlify.app/)",
+        "height": 280,
+        "width": 1540,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        -120
+      ],
+      "id": "04896ff6-8365-4e54-8de9-ff0a1ddff2de",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "conversations",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2620,
+        0
+      ],
+      "id": "6aa452ad-27ed-4373-9454-667e0fe3e1ab",
+      "name": "Transformar em array1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2840,
+        0
+      ],
+      "id": "3286028f-55a3-42e4-9f8e-ad205f3b4276",
+      "name": "Resposta do webhook1"
+    },
+    {
+      "parameters": {
+        "path": "conversations-sb",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1740,
+        0
+      ],
+      "id": "1fe67419-1865-41cf-a6a7-d3768e064b58",
+      "name": "Executar get chats1",
+      "webhookId": "62598ee2-b67c-444c-bbbc-47061138573d",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bJHwbb4PtaImVqpp",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "conversation-id-sb",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1740,
+        260
+      ],
+      "id": "8c4456ba-9a3f-4e42-b75c-3e45a07422af",
+      "name": "Executar get chat by id1",
+      "webhookId": "62598ee2-b67c-444c-bbbc-47061138573d",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bJHwbb4PtaImVqpp",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "messages",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2840,
+        260
+      ],
+      "id": "4f7eb8fb-6465-4bb0-9f23-732c58471feb",
+      "name": "Transformar em array (02)1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        3060,
+        260
+      ],
+      "id": "f0889b32-9840-4f9f-adcf-069a3bd702fd",
+      "name": "Resposta do webhook (02)1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "DELETE",
+        "path": "delete-conversation-id-sb",
+        "authentication": "headerAuth",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1740,
+        580
+      ],
+      "id": "dd976cdf-198b-4653-b3e0-cf08f3c33cd7",
+      "name": "Executar delete chat by id1",
+      "webhookId": "62598ee2-b67c-444c-bbbc-47061138573d",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bJHwbb4PtaImVqpp",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Api da chat do whatsapp\n**Fluxo para enviar mensagens da conversa** do bot com o cliente no whatsapp [view](https://silly-cocada-84d443.netlify.app/)",
+        "height": 280,
+        "width": 1540,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        180
+      ],
+      "id": "681b9eeb-251c-48e2-9638-bb2fdaad0b38",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Api da chat do whatsapp\n**Fluxo para apagar uma conversa** do bot com o cliente no whatsapp [view](https://silly-cocada-84d443.netlify.app/)",
+        "height": 280,
+        "width": 1540,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        480
+      ],
+      "id": "a41b96be-5c86-4933-8c4c-a0f308d9f055",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "## Api da chat do whatsapp\n**Fluxo para enviar mensagens para o cliente** assumindo a conversa do chatbot [view](https://silly-cocada-84d443.netlify.app/)",
+        "height": 280,
+        "width": 1540,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        780
+      ],
+      "id": "899943e3-9d5b-4c3d-923d-fdfda794b577",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "send-message-sb",
+        "authentication": "headerAuth",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1740,
+        860
+      ],
+      "id": "dd9fa757-0bb4-4f62-a276-fb40ca69d622",
+      "name": "Executar post send message1",
+      "webhookId": "62598ee2-b67c-444c-bbbc-47061138573d",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bJHwbb4PtaImVqpp",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1ilF1reBf5dXIHVfi2E8EAdHDw7VpPIoMGVihf-ehq3E",
+          "mode": "list",
+          "cachedResultName": "Contatos pipedrive",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ilF1reBf5dXIHVfi2E8EAdHDw7VpPIoMGVihf-ehq3E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Contatos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ilF1reBf5dXIHVfi2E8EAdHDw7VpPIoMGVihf-ehq3E/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "phone": "={{ $('Executar post send message1').item.json.body.session_id }}",
+            "assistente": "humano"
+          },
+          "matchingColumns": [
+            "phone"
+          ],
+          "schema": [
+            {
+              "id": "id_pessoa",
+              "displayName": "id_pessoa",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "id_negocio",
+              "displayName": "id_negocio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "faturamento_mensal",
+              "displayName": "faturamento_mensal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "modelo_loja",
+              "displayName": "modelo_loja",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "assistente",
+              "displayName": "assistente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "hora_envio",
+              "displayName": "hora_envio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "interacao",
+              "displayName": "interacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "hora_interacao",
+              "displayName": "hora_interacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "segunda_mensagem",
+              "displayName": "segunda_mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "hora_segunda_mensagem",
+              "displayName": "hora_segunda_mensagem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "contato_finalizado",
+              "displayName": "contato_finalizado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "hora_contato_finalizado",
+              "displayName": "hora_contato_finalizado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "sem_contato",
+              "displayName": "sem_contato",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2400,
+        860
+      ],
+      "id": "c0905b1c-7ead-4325-8d11-26b469f440fa",
+      "name": "Atualizar status do contato1",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "executeOnce": false,
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "TXk61zCrceaH7BIy",
+          "name": "crendencial - tools@grupoescalada.com.br"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "300708243128017",
+        "recipientPhoneNumber": "={{ $('Executar post send message1').item.json.body.session_id }}",
+        "textBody": "={{ $('Executar post send message1').item.json.body.message }}",
+        "additionalFields": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        2620,
+        860
+      ],
+      "id": "24541db3-edfe-4eaa-bd5b-9179ebeceea4",
+      "name": "Enviar mensagem para o contato1",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "0jVbh9WBlxnzi2xm",
+          "name": "WhatsApp account (Permanente)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## VERSÃO SUPABASE",
+        "height": 80,
+        "width": 260,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        -220
+      ],
+      "id": "08276966-5035-4074-9b1f-64552230822d",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d5d3066f-f477-4e68-9f9e-6c17a71ac7a1",
+              "name": "session_id",
+              "value": "={{ $('Buscar chats1').item.json.customer_phone }}",
+              "type": "string"
+            },
+            {
+              "id": "4d610794-398b-4182-8f95-5363d2deda71",
+              "name": "name_contact",
+              "value": "={{ $('Buscar chats1').item.json.customer_name }}",
+              "type": "string"
+            },
+            {
+              "id": "cc7dc315-f4d0-49fe-8863-954ea790b073",
+              "name": "message_timestamp",
+              "value": "={{ new Date(new Date($('Buscar chats1').item.json.updated_at).getTime() - 3 * 60 * 60 * 1000).toISOString() }}",
+              "type": "string"
+            },
+            {
+              "id": "694a9ee0-90f5-48b0-b139-4573378cd2e3",
+              "name": "tags",
+              "value": "={{ $json.tags }}",
+              "type": "array"
+            },
+            {
+              "id": "fae044b2-65f9-4d63-b4c4-b27753afb552",
+              "name": "picture",
+              "value": "={{ $json.picture }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2180,
+        0
+      ],
+      "id": "843afc20-bce8-4422-9ad4-26a993b1410e",
+      "name": "Salvar chats"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "chats",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "agent_id",
+              "condition": "eq",
+              "keyValue": "={{ $json.query.salerId }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        0
+      ],
+      "id": "53a40098-bc27-42d5-8593-0d53689fb5c7",
+      "name": "Buscar chats1",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 5,
+      "credentials": {
+        "supabaseApi": {
+          "id": "AowcDqFc329EKnyv",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "message_timestamp",
+              "order": "descending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        0
+      ],
+      "id": "5696ec86-5537-41f1-8f9c-6a98dd8e5fc4",
+      "name": "Ordenar chats",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 5,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "customer_phone",
+              "keyValue": "={{ $json.query.session_id }}"
+            },
+            {
+              "keyName": "agent_id",
+              "keyValue": "={{ $json.query.salerId }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        260
+      ],
+      "id": "3c2293c5-029a-496a-aaaf-abe59b0c5cab",
+      "name": "Buscar chat",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "maxTries": 5,
+      "credentials": {
+        "supabaseApi": {
+          "id": "AowcDqFc329EKnyv",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "messages_chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "chat_id",
+              "keyValue": "={{ $json.id }}"
+            },
+            {
+              "keyName": "agent_id",
+              "keyValue": "={{ $json.agent_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2180,
+        260
+      ],
+      "id": "fd14b51a-f99c-49c7-9347-d030062dc589",
+      "name": "Buscar mensagens do chat1",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 5,
+      "credentials": {
+        "supabaseApi": {
+          "id": "AowcDqFc329EKnyv",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "created_at"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        260
+      ],
+      "id": "94872070-2c1a-4a9d-b08b-256213aa2dd4",
+      "name": "Ordenar mensagens",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 5,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d48cb720-0475-4c99-85cd-b2a44baa862b",
+              "name": "created_at",
+              "value": "={{ new Date(new Date($json.created_at).getTime() - 3 * 60 * 60 * 1000).toISOString() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2620,
+        260
+      ],
+      "id": "259c4903-ba52-4837-ac0e-cbfda74d710f",
+      "name": "Formatar hora da mensagem"
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "customer_phone",
+              "condition": "eq",
+              "keyValue": "={{ $json.query.session_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        580
+      ],
+      "id": "920d9710-714d-4be6-8615-482c62da74c5",
+      "name": "Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "AowcDqFc329EKnyv",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "customer_phone",
+              "keyValue": "={{ $json.body.session_id }}"
+            },
+            {
+              "keyName": "agent_id",
+              "keyValue": "1"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        860
+      ],
+      "id": "5b654594-e967-4e73-b2dc-f902a23809f6",
+      "name": "Buscar chat1",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "maxTries": 5,
+      "credentials": {
+        "supabaseApi": {
+          "id": "AowcDqFc329EKnyv",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "messages_chats",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "chat_id",
+              "fieldValue": "={{ $json.id }}"
+            },
+            {
+              "fieldId": "message",
+              "fieldValue": "={{ $('Executar post send message1').item.json.body.message }}"
+            },
+            {
+              "fieldId": "sender",
+              "fieldValue": "agent"
+            },
+            {
+              "fieldId": "agent_id",
+              "fieldValue": "={{ $json.agent_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2180,
+        860
+      ],
+      "id": "2c25136e-0547-4531-a783-62cdafd618d6",
+      "name": "Supabase1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "AowcDqFc329EKnyv",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Api da chat do whatsapp\n**Fluxo para enviar mensagens para o cliente** assumindo a conversa do chatbot [view](https://silly-cocada-84d443.netlify.app/)",
+        "height": 280,
+        "width": 1540,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        1080
+      ],
+      "id": "659a0faa-7a40-4e68-b498-776ac008b783",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "httpMethod": "PUT",
+        "path": "update-tags",
+        "authentication": "headerAuth",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1740,
+        1160
+      ],
+      "id": "fb587ea9-dfef-4dca-82b4-04324b66df11",
+      "name": "Executar post send message2",
+      "webhookId": "62598ee2-b67c-444c-bbbc-47061138573d",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bJHwbb4PtaImVqpp",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "customer_phone",
+              "condition": "eq",
+              "keyValue": "={{ $json.body.session_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "tags",
+              "fieldValue": "={{ $json.body.tags }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        1160
+      ],
+      "id": "c2f85f20-036d-4156-951a-54f0b8efb806",
+      "name": "Buscar chat2",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "maxTries": 5,
+      "credentials": {
+        "supabaseApi": {
+          "id": "AowcDqFc329EKnyv",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Api da chat do whatsapp\n**Fluxo para enviar mensagens para o cliente** assumindo a conversa do chatbot [view](https://silly-cocada-84d443.netlify.app/)",
+        "height": 280,
+        "width": 1540,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        1380
+      ],
+      "id": "cf367597-04c0-4b23-98f6-65410e74c210",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "httpMethod": "PUT",
+        "path": "update-chat",
+        "authentication": "headerAuth",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1740,
+        1460
+      ],
+      "id": "7e7691a5-78e1-4759-ba59-a8a7838abc73",
+      "name": "Executar post send message3",
+      "webhookId": "62598ee2-b67c-444c-bbbc-47061138573d",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bJHwbb4PtaImVqpp",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "customer_phone",
+              "condition": "eq",
+              "keyValue": "={{ $json.body.chat_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "customer_name",
+              "fieldValue": "={{ $json.body.name_contact }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        1460
+      ],
+      "id": "b9186e24-4493-4ed6-908e-59577ca1590b",
+      "name": "Buscar chat3",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "maxTries": 5,
+      "credentials": {
+        "supabaseApi": {
+          "id": "AowcDqFc329EKnyv",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "predefined_messages-get",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1740,
+        1760
+      ],
+      "id": "f5568ff4-4983-4fae-a726-932b94776a84",
+      "name": "Executar get chat by id2",
+      "webhookId": "62598ee2-b67c-444c-bbbc-47061138573d",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bJHwbb4PtaImVqpp",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "messages",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        1760
+      ],
+      "id": "2fad65fb-79df-47d2-a2d4-a5d739da6d86",
+      "name": "Transformar em array (02)2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2620,
+        1760
+      ],
+      "id": "ac392dc5-ec45-4787-973a-6d8515e6d3a2",
+      "name": "Resposta do webhook (02)2"
+    },
+    {
+      "parameters": {
+        "content": "## Api da chat do whatsapp\n**Fluxo para enviar mensagens da conversa** do bot com o cliente no whatsapp [view](https://silly-cocada-84d443.netlify.app/)",
+        "height": 280,
+        "width": 1540,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        1680
+      ],
+      "id": "84ce05a7-0db8-4b81-99ed-62a73236489e",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "predefined_messages",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "agent_id",
+              "keyValue": "={{ $json.query.agent_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        1760
+      ],
+      "id": "ad44181d-e27a-41fc-b495-ef75cdba03a4",
+      "name": "Buscar chat4",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "maxTries": 5,
+      "credentials": {
+        "supabaseApi": {
+          "id": "AowcDqFc329EKnyv",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "name"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [
+        2180,
+        1760
+      ],
+      "id": "b048bf5b-007f-44cd-9e40-0bcf5973cbc5",
+      "name": "Ordenar mensagens1",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
+      "maxTries": 5,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "## Api da chat do whatsapp\n**Fluxo para enviar mensagens para o cliente** assumindo a conversa do chatbot [view](https://silly-cocada-84d443.netlify.app/)",
+        "height": 280,
+        "width": 1540,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        1980
+      ],
+      "id": "e5dccfd3-e04b-4796-a693-0327d2d963a7",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "httpMethod": "PUT",
+        "path": "predefined_messages-update",
+        "authentication": "headerAuth",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        1740,
+        2060
+      ],
+      "id": "32b34e28-0172-420e-9ee9-e079d203312f",
+      "name": "Executar post send message4",
+      "webhookId": "62598ee2-b67c-444c-bbbc-47061138573d",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "bJHwbb4PtaImVqpp",
+          "name": "Header Auth account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "predefined_messages",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.body.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "message",
+              "fieldValue": "={{ $json.body.message }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1960,
+        2060
+      ],
+      "id": "89edb510-cc72-405f-b752-5453c2bbbf7e",
+      "name": "Buscar chat5",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "maxTries": 5,
+      "credentials": {
+        "supabaseApi": {
+          "id": "AowcDqFc329EKnyv",
+          "name": "Supabase account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Executar get chats1": [
+      {
+        "json": {
+          "headers": {
+            "host": "autowebhook.escaladaecom.com.br",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "authorization": "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
+            "content-type": "application/json",
+            "if-none-match": "W/\"926-EBhTUIajKdaQHl6XjJc2R7so7kE\"",
+            "origin": "http://localhost:3000",
+            "priority": "u=1, i",
+            "referer": "http://localhost:3000/",
+            "sec-ch-ua": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "201.48.21.149",
+            "x-forwarded-host": "autowebhook.escaladaecom.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "c159c26ae326",
+            "x-real-ip": "201.48.21.149"
+          },
+          "params": {},
+          "query": {
+            "salerId": "1"
+          },
+          "body": {},
+          "webhookUrl": "https://autowebhook.escaladaecom.com.br/webhook/conversations-sb",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Executar get chat by id1": [
+      {
+        "json": {
+          "headers": {
+            "host": "autowebhook.escaladaecom.com.br",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "origin": "null",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Not(A:Brand\";v=\"99\", \"Google Chrome\";v=\"133\", \"Chromium\";v=\"133\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "177.102.229.113",
+            "x-forwarded-host": "autowebhook.escaladaecom.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "5256acba7193",
+            "x-real-ip": "177.102.229.113"
+          },
+          "params": {},
+          "query": {
+            "session_id": "553387296165"
+          },
+          "body": {},
+          "webhookUrl": "https://autowebhook.escaladaecom.com.br/webhook/conversation-id",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Executar delete chat by id1": [
+      {
+        "json": {
+          "headers": {
+            "host": "autowebhook.escaladaecom.com.br",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "origin": "https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3-weoicp03--3000--495c5120.local-credentialless.webcontainer-api.io",
+            "priority": "u=1, i",
+            "referer": "https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3-weoicp03--3000--495c5120.local-credentialless.webcontainer-api.io/",
+            "sec-ch-ua": "\"Not(A:Brand\";v=\"99\", \"Google Chrome\";v=\"133\", \"Chromium\";v=\"133\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "177.102.229.113",
+            "x-forwarded-host": "autowebhook.escaladaecom.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "5256acba7193",
+            "x-real-ip": "177.102.229.113"
+          },
+          "params": {},
+          "query": {
+            "session_id": "553387296165"
+          },
+          "body": {},
+          "webhookUrl": "https://autowebhook.escaladaecom.com.br/webhook/delete-conversation-id",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Executar post send message1": [
+      {
+        "json": {
+          "headers": {
+            "host": "autowebhook.escaladaecom.com.br",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+            "content-length": "44",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "content-type": "application/json",
+            "origin": "http://localhost:3000",
+            "priority": "u=1, i",
+            "referer": "http://localhost:3000/",
+            "sec-ch-ua": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "177.102.229.113",
+            "x-forwarded-host": "autowebhook.escaladaecom.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "c159c26ae326",
+            "x-real-ip": "177.102.229.113"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "session_id": "553387296165",
+            "message": "oi"
+          },
+          "webhookUrl": "https://autowebhook.escaladaecom.com.br/webhook/send-message",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Executar post send message2": [
+      {
+        "json": {
+          "headers": {
+            "host": "autowebhook.escaladaecom.com.br",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+            "content-length": "46",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "authorization": "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
+            "content-type": "application/json",
+            "origin": "http://localhost:3000",
+            "priority": "u=1, i",
+            "referer": "http://localhost:3000/",
+            "sec-ch-ua": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "201.48.21.149",
+            "x-forwarded-host": "autowebhook.escaladaecom.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "c159c26ae326",
+            "x-real-ip": "201.48.21.149"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "session_id": "553387296165",
+            "tags": [
+              "Morno"
+            ]
+          },
+          "webhookUrl": "https://autowebhook.escaladaecom.com.br/webhook/update-tags",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Executar post send message3": [
+      {
+        "json": {
+          "headers": {
+            "host": "autowebhook.escaladaecom.com.br",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+            "content-length": "51",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "authorization": "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
+            "content-type": "application/json",
+            "origin": "http://localhost:3000",
+            "priority": "u=1, i",
+            "referer": "http://localhost:3000/",
+            "sec-ch-ua": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "201.48.21.149",
+            "x-forwarded-host": "autowebhook.escaladaecom.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "c159c26ae326",
+            "x-real-ip": "201.48.21.149"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "chat_id": "553387296165",
+            "name_contact": "Gustavo"
+          },
+          "webhookUrl": "https://autowebhook.escaladaecom.com.br/webhook/update-chat",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Executar get chat by id2": [
+      {
+        "json": {
+          "headers": {
+            "host": "autowebhook.escaladaecom.com.br",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "origin": "null",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Not(A:Brand\";v=\"99\", \"Google Chrome\";v=\"133\", \"Chromium\";v=\"133\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "177.102.229.113",
+            "x-forwarded-host": "autowebhook.escaladaecom.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "5256acba7193",
+            "x-real-ip": "177.102.229.113"
+          },
+          "params": {},
+          "query": {
+            "agent_id": "1"
+          },
+          "body": {},
+          "webhookUrl": "https://autowebhook.escaladaecom.com.br/webhook/conversation-id",
+          "executionMode": "production"
+        }
+      }
+    ],
+    "Executar post send message4": [
+      {
+        "json": {
+          "headers": {
+            "host": "autowebhook.escaladaecom.com.br",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36",
+            "content-length": "116",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+            "authorization": "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
+            "content-type": "application/json",
+            "origin": "http://localhost:3000",
+            "priority": "u=1, i",
+            "referer": "http://localhost:3000/",
+            "sec-ch-ua": "\"Chromium\";v=\"134\", \"Not:A-Brand\";v=\"24\", \"Google Chrome\";v=\"134\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "201.48.21.149",
+            "x-forwarded-host": "autowebhook.escaladaecom.com.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "c159c26ae326",
+            "x-real-ip": "201.48.21.149"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "id": 1,
+            "message": "Olá. Espero que esteja tendo um excelente dia. Como posso te ajudar hoje?",
+            "name": "Mensagem 01"
+          },
+          "webhookUrl": "https://autowebhook.escaladaecom.com.br/webhook/predefined_messages-update",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Transformar em array1": {
+      "main": [
+        [
+          {
+            "node": "Resposta do webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Executar get chats1": {
+      "main": [
+        [
+          {
+            "node": "Buscar chats1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Executar get chat by id1": {
+      "main": [
+        [
+          {
+            "node": "Buscar chat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transformar em array (02)1": {
+      "main": [
+        [
+          {
+            "node": "Resposta do webhook (02)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Executar delete chat by id1": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Executar post send message1": {
+      "main": [
+        [
+          {
+            "node": "Buscar chat1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualizar status do contato1": {
+      "main": [
+        [
+          {
+            "node": "Enviar mensagem para o contato1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar chats": {
+      "main": [
+        [
+          {
+            "node": "Ordenar chats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar chats1": {
+      "main": [
+        [
+          {
+            "node": "Salvar chats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ordenar chats": {
+      "main": [
+        [
+          {
+            "node": "Transformar em array1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar chat": {
+      "main": [
+        [
+          {
+            "node": "Buscar mensagens do chat1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar mensagens do chat1": {
+      "main": [
+        [
+          {
+            "node": "Ordenar mensagens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ordenar mensagens": {
+      "main": [
+        [
+          {
+            "node": "Formatar hora da mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatar hora da mensagem": {
+      "main": [
+        [
+          {
+            "node": "Transformar em array (02)1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar chat1": {
+      "main": [
+        [
+          {
+            "node": "Supabase1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase1": {
+      "main": [
+        [
+          {
+            "node": "Atualizar status do contato1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Executar post send message2": {
+      "main": [
+        [
+          {
+            "node": "Buscar chat2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar chat2": {
+      "main": [
+        []
+      ]
+    },
+    "Executar post send message3": {
+      "main": [
+        [
+          {
+            "node": "Buscar chat3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Executar get chat by id2": {
+      "main": [
+        [
+          {
+            "node": "Buscar chat4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transformar em array (02)2": {
+      "main": [
+        [
+          {
+            "node": "Resposta do webhook (02)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar chat4": {
+      "main": [
+        [
+          {
+            "node": "Ordenar mensagens1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ordenar mensagens1": {
+      "main": [
+        [
+          {
+            "node": "Transformar em array (02)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Executar post send message4": {
+      "main": [
+        [
+          {
+            "node": "Buscar chat5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "fdb76776-0774-43f9-ae91-4f47878197df",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "33738330930e3881dd5571eca013f36ddf8aab20e4ea5c1f2ebaf4a2b4668ac6"
+  },
+  "id": "p9a2Dk02MoqSz71j",
+  "tags": [
+    {
+      "createdAt": "2025-02-12T17:47:44.995Z",
+      "updatedAt": "2025-02-13T19:44:57.014Z",
+      "id": "YtyGhWjxrHZCpNw2",
+      "name": "Em elaboração"
+    },
+    {
+      "createdAt": "2025-02-14T12:06:33.109Z",
+      "updatedAt": "2025-02-14T12:06:33.109Z",
+      "id": "2E6oMffEGd0WVRhB",
+      "name": "Comercial"
+    },
+    {
+      "createdAt": "2025-03-06T13:27:48.930Z",
+      "updatedAt": "2025-03-06T13:27:48.930Z",
+      "id": "RNwm3HJ1R0nX2fHS",
+      "name": "Gustavo Martins"
+    }
+  ]
+}
