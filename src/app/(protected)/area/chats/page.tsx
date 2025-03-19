@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 interface Collaborator {
-  name_contact: string;
-  saler_phone: string;
-  saler_id: string,
+  name: string;
+  phone: string;
+  id: string;
+  agent_type: string;
 }
 
 export default function CollaboratorsPage() {
@@ -20,8 +21,8 @@ export default function CollaboratorsPage() {
   useEffect(() => {
     async function fetchCollaborators() {
       try {
-        console.log("Buscando chats...");
-        const response = await fetch(`/api/chats?salerId=${salerId}`, {
+        console.log("Buscando agentes...");
+        const response = await fetch('/api/agents', {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
