@@ -471,7 +471,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
                   </div>
                   <div className="flex-1 overflow-hidden">
                     <div className="font-medium leading-none mb-1">
-                      {contact.name || contact.name_contact || "Desconhecido"}
+                      {contact.customer_name || contact.name_contact || "Desconhecido"}
                     </div>
                     {renderTagIndicators(contact.tags)}
                     <div className="text-sm text-muted-foreground truncate">
