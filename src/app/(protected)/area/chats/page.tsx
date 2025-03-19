@@ -18,11 +18,10 @@ export default function CollaboratorsPage() {
     async function fetchCollaborators() {
       try {
         console.log("Buscando chats...");
-        const response = await fetch("https://autowebhook.escaladaecom.com.br/webhook/collaborators-sb", {
+        const response = await fetch(`/api/chats?salerId=${collaborator.saler_id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": "Bearer 7cVxO8sPdL2eK1zQrT5wX9uB0mN3jF4a",
           },
         });
 
@@ -33,7 +32,7 @@ export default function CollaboratorsPage() {
         const data = await response.json();
         console.log("Dados recebidos:", data);
 
-        setCollaborators(data.collaborators);
+        setCollaborators(data.conversations);
       } catch (error) {
         console.error("Erro ao buscar chats:", error);
         setError("Falha ao carregar chats. Tente novamente mais tarde.");
