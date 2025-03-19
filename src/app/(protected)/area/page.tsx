@@ -16,13 +16,7 @@ export default async function ProtectedPage() {
       title: "Histórico de Chats",
       description: "Visualize e gerencie históricos de conversas",
       icon: <MessageSquare className="h-7 w-7 text-primary" />,
-      href: "/area/chat-historico",
-    },
-    {
-      title: "Histórico de Chats - Colaborador",
-      description: "Acesse conversas específicas dos colaboradores",
-      icon: <MessageSquare className="h-7 w-7 text-primary" />,
-      href: "/area/collaborators",
+      href: "/area/chats",
     }
   ];
 

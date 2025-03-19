@@ -1,13 +1,11 @@
 export interface Message {
-  message: {
-    id: string;
-    type: 'ai' | 'user';
-    content: string;
-    additional_kwargs: Record<string, any>;
-    response_metadata: Record<string, any>;
-  };
-  message_timestamp: string;
-}
+  id: string;
+  chat_id: string;
+  sender: 'cliente' | 'agent';
+  message: string;
+  agent_id: string;
+  created_at: string;
+};
 
 
 export interface Conversation {
@@ -16,6 +14,8 @@ export interface Conversation {
   messages: Message[];
   hasNewMessages?: boolean;
   message_timestamp: string;
+  tags: string[];
+  picture: string;
 }
 
 export interface ConversationsResponse {
@@ -24,4 +24,26 @@ export interface ConversationsResponse {
 
 export interface ConversationResponse {
   messages: Message[];
-} 
+}
+
+export interface LeadInfo {
+  owner_id: string;
+  owner_name: string;
+  deal_status: string;
+  created_at?: string;
+  updated_at?: string;
+  value?: number;
+  pipeline?: string;
+  stage?: string;
+  tags: string[]
+}
+
+export interface LeadInfoResponse {
+  success: boolean;
+  data: LeadInfo;
+}
+
+export interface Collaborator {
+  name_contact: string;
+  saler_id: string;
+}
