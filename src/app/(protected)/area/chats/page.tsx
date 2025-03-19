@@ -13,12 +13,15 @@ export default function CollaboratorsPage() {
   const [collaborators, setCollaborators] = useState<Collaborator[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const urlParams = new URLSearchParams(window.location.search);
+  const salerId = urlParams.get('salerId') || '';
+
 
   useEffect(() => {
     async function fetchCollaborators() {
       try {
         console.log("Buscando chats...");
-        const response = await fetch(`/api/chats?salerId=${collaborator.saler_id}`, {
+        const response = await fetch(`/api/chats?salerId=${salerId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
