@@ -41,8 +41,8 @@ const AVAILABLE_TAGS = ["Quente", "Morno", "Frio", "Call Agendada"];
 
 interface ChatListProps {
   conversations: Conversation[];
-  onSelectChat: (phone: string) => void;
-  onDeleteChat: (phone: string) => void;
+  onSelectChat: (id: string) => void;
+  onDeleteChat: (id: string) => void;
   selectedChat?: string;
   predefinedMessages: PredefinedMessage[];
 }
@@ -73,7 +73,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
   const [chatConfigName, setChatConfigName] = useState("");
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
   const [isUpdatingChat, setIsUpdatingChat] = useState(false);
-  
+
   // New states for predefined messages
   const [predefinedMessagesModalOpen, setPredefinedMessagesModalOpen] = useState(false);
   const [editingMessage, setEditingMessage] = useState<PredefinedMessage | null>(null);
@@ -244,7 +244,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
   // Function to update predefined message
   const updatePredefinedMessage = async () => {
     if (!editingMessage) return;
-    
+
     setIsUpdatingMessage(true);
     try {
       const response = await fetch(
@@ -321,11 +321,12 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
 
   const filteredConversations = conversations.filter((contact) => {
     if (!contact) return false;
-    
+
     const searchLower = searchTerm.toLowerCase();
-    const nameMatch = contact.name_contact ? contact.name_contact.toLowerCase().includes(searchLower) : false;
+    const nameMatch = contact.name ? contact.name.toLowerCase().includes(searchLower) : false;
+    const nameContactMatch = contact.name_contact ? contact.name_contact.toLowerCase().includes(searchLower) : false;
     const sessionMatch = contact.customer_phone ? contact.customer_phone.toLowerCase().includes(searchLower) : false;
-    const matchesSearch = nameMatch || sessionMatch;
+    const matchesSearch = nameMatch || nameContactMatch || sessionMatch;
 
     // If no tag filters are applied, only apply search filter
     if (tagFilters.length === 0) {
@@ -344,7 +345,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
     <Card className="h-full">
       <div className="p-4 border-b flex justify-between items-center">
         <h2 className="text-xl font-semibold">Conversas</h2>
-        
+
         {/* New Settings Button */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -360,7 +361,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      
+
       <div className="p-4 border-b">
         <div className="relative mb-3">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -447,13 +448,13 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
           {filteredConversations.length > 0 ? (
             filteredConversations.map((contact) => (
               <div
-                key={contact.session_id}
-                className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${selectedChat === contact.session_id ? "bg-primary/10" : "hover:bg-muted"
+                key={contact.id}
+                className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${selectedChat === contact.id ? "bg-primary/10" : "hover:bg-muted"
                   }`}
               >
                 <div
                   className="flex flex-1 items-center gap-3"
-                  onClick={() => onSelectChat(contact.session_id)}
+                  onClick={() => onSelectChat(contact.id)}
                 >
                   <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted overflow-hidden">
                     {contact.picture ? (
@@ -470,11 +471,11 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
                   </div>
                   <div className="flex-1 overflow-hidden">
                     <div className="font-medium leading-none mb-1">
-                      {contact.name_contact || "Desconhecido"}
+                      {contact.name || contact.name_contact || "Desconhecido"}
                     </div>
                     {renderTagIndicators(contact.tags)}
                     <div className="text-sm text-muted-foreground truncate">
-                      {contact.session_id}
+                      {contact.customer_phone || contact.session_id}
                     </div>
                   </div>
                 </div>
@@ -490,7 +491,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => openChatConfigModal(contact.session_id, contact.name_contact || "Desconhecido")}>
+                    <DropdownMenuItem onClick={() => openChatConfigModal(contact.id, contact.name_contact || "Desconhecido")}>
                       Configuração
                     </DropdownMenuItem>
                     <DropdownMenuItem
@@ -501,7 +502,7 @@ export function ChatList({ conversations, onSelectChat, onDeleteChat, selectedCh
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="text-destructive focus:text-destructive"
-                      onClick={() => onDeleteChat(contact.session_id)}
+                      onClick={() => onDeleteChat(contact.id)}
                     >
                       Excluir Conversa
                     </DropdownMenuItem>
