@@ -72,11 +72,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
 
   if (error) {
     console.error(error.message);
-    return encodedRedirect(
-      "error",
-      "/esqueci-senha",
-      "Could not reset password",
-    );
+    return encodedRedirect("error", "/esqueci-senha", "Could not reset password");
   }
 
   if (callbackUrl) {
@@ -97,7 +93,7 @@ export const resetPasswordAction = async (formData: FormData) => {
   const confirmPassword = formData.get("confirmPassword") as string;
 
   if (!password || !confirmPassword) {
-    encodedRedirect(
+    return encodedRedirect(
       "error",
       "/redefinir-senha",
       "Password and confirm password are required",
@@ -105,7 +101,7 @@ export const resetPasswordAction = async (formData: FormData) => {
   }
 
   if (password !== confirmPassword) {
-    encodedRedirect(
+    return encodedRedirect(
       "error",
       "/redefinir-senha",
       "Passwords do not match",
@@ -117,18 +113,57 @@ export const resetPasswordAction = async (formData: FormData) => {
   });
 
   if (error) {
-    encodedRedirect(
+    return encodedRedirect(
       "error",
       "/redefinir-senha",
       "Password update failed",
     );
   }
 
-  encodedRedirect("success", "/redefinir-senha", "Password updated");
+  return encodedRedirect("success", "/redefinir-senha", "Password updated");
 };
 
 export const signOutAction = async () => {
   const supabase = await createClient();
   await supabase.auth.signOut();
   return redirect("/entrar");
+};
+
+/**
+ * Ação para buscar o profile do usuário logado
+ */
+export const getUserProfileAction = async () => {
+  const supabase = await createClient();
+
+  // Obtem a sessão atual
+  const {
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession();
+
+  // Se não houver sessão ou der erro, redireciona
+  if (!session?.user || sessionError) {
+    return encodedRedirect("error", "/entrar", "Usuário não autenticado");
+  }
+
+  // Busca o profile na tabela "profiles", usando o user_id do usuário logado
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("user_id", session.user.id)
+    .single();
+
+  if (error) {
+    console.error(error.message);
+    return encodedRedirect(
+      "error",
+      "/area",
+      "Não foi possível obter o perfil do usuário",
+    );
+  }
+
+  // Se você quiser simplesmente retornar os dados para uso no servidor,
+  // retorne-os como objeto. Se precisar exibir algo na tela,
+  // pode fazer isso a partir do componente que chamar essa ação.
+  return data;
 };

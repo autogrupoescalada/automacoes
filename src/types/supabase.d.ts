@@ -5,6 +5,13 @@ declare module '@utils/supabase/server' {
     [key: string]: unknown;
   }
 
+  interface Profile {
+    id: string;
+    role?: string;
+    sector?: string;
+    id_agent?: string;
+  }
+
   interface Session {
     access_token: string;
     refresh_token: string;
@@ -20,6 +27,13 @@ declare module '@utils/supabase/server' {
     error: Error | null;
   }
 
+  interface AuthResponseProfile {
+    data: {
+      profile: Profile | null
+    };
+    error: Error | null;
+  }
+
   interface QueryResult<T> {
     data: T[] | null;
     error: Error | null;
@@ -30,6 +44,7 @@ declare module '@utils/supabase/server' {
     order(column: string, options?: { ascending?: boolean }): QueryBuilder<T>;
     single(): Promise<{ data: T | null; error: Error | null }>;
     insert<U>(values: U[]): QueryBuilder<T>;
+    eq<K extends string>(column: K, value: any): QueryBuilder<T>;
     then<TResult1 = QueryResult<T>, TResult2 = never>(
       onfulfilled?: ((value: QueryResult<T>) => TResult1 | PromiseLike<TResult1>) | null,
       onrejected?: ((reason: unknown) => TResult2 | PromiseLike<TResult2>) | null
@@ -46,6 +61,7 @@ declare module '@utils/supabase/server' {
       resetPasswordForEmail(email: string, options?: Record<string, unknown>): Promise<{ error: Error | null }>;
       updateUser(options: { password: string }): Promise<AuthResponse>;
       exchangeCodeForSession(code: string): Promise<{ error: Error | null }>;
+      getUserProfileAction(): Promise<AuthResponseProfile>;
     };
     from(table: string): QueryBuilder<unknown>;
   }

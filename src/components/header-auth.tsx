@@ -1,4 +1,4 @@
-import { signOutAction } from "@/app/actions";
+import { signOutAction, getUserProfileAction } from "@/app/actions";
 import { hasEnvVars } from "@utils/supabase/check-env-vars";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
@@ -12,6 +12,11 @@ export default async function AuthButton() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  // Get the profile using the server action instead
+  const profile = await getUserProfileAction();
+
+  console.log(profile);
 
   if (!hasEnvVars) {
     return (
